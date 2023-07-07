@@ -138,7 +138,7 @@ init(Args) ->
   Header = make_udp_header(Hostname, Port),
   SendFun =
     fun(Lines) ->
-      true = erlang:port_command(Socket, [Header, Lines])
+      ok = gen_udp:send(Socket, Hostname, Port, [Header, Lines])
     end,
   Packet = statsderl_packet:new(ArgF(max_packet_bytes),
                                 ArgF(max_report_interval_ms),
@@ -300,7 +300,7 @@ resolve_hostname(Hostname) ->
 %% with precision of 3 digits after floating point.
 %% @end
 -spec rand1000() -> 0..1000.
-rand1000() -> crypto:rand_uniform(0, 1001).
+rand1000() -> rand:uniform(1001)-1.
 
 %%%_* Emacs ====================================================================
 %%% Local Variables:
